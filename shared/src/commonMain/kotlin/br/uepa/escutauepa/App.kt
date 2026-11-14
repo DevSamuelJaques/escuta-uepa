@@ -1,16 +1,18 @@
 package br.uepa.escutauepa
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.*
+import br.uepa.escutauepa.repository.InMemoryManifestacaoRepository
+import br.uepa.escutauepa.service.AutenticacaoService
+import br.uepa.escutauepa.service.ManifestacaoService
+import br.uepa.escutauepa.viewmodel.*
+import br.uepa.escutauepa.ui.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.uepa.escutauepa.service.AutenticacaoService
-import br.uepa.escutauepa.ui.HomeScreen
-import br.uepa.escutauepa.ui.LoginScreen
-import br.uepa.escutauepa.viewmodel.HomeViewModel
-import br.uepa.escutauepa.viewmodel.LoginViewModel
 
 private enum class Tela {
     INICIAL,
@@ -24,6 +26,17 @@ fun App() {
         AutenticacaoService()
     }
 
+    val repository = remember {
+        InMemoryManifestacaoRepository()
+    }
+
+    val manifestacaoService = remember {
+        ManifestacaoService(
+            repository = repository,
+            autenticacaoService = autenticacaoService
+        )
+    }
+
     val loginViewModel = remember {
         LoginViewModel(autenticacaoService)
     }
@@ -32,18 +45,25 @@ fun App() {
         HomeViewModel(autenticacaoService)
     }
 
+    val manifestacaoViewModel = remember {
+        ManifestacaoViewModel(manifestacaoService)
+    }
+
     var telaAtual by remember {
         mutableStateOf(Tela.INICIAL)
     }
 
     MaterialTheme {
-        if (loginViewModel.usuarioAutenticado == null) {
+        val usuario = loginViewModel.usuarioAutenticado
+
+        if (usuario == null) {
             LoginScreen(loginViewModel)
         } else {
             when (telaAtual) {
                 Tela.INICIAL -> HomeScreen(
                     viewModel = homeViewModel,
                     onCadastrar = {
+                        manifestacaoViewModel.limparFormulario()
                         telaAtual = Tela.CADASTRO
                     },
                     onHistorico = {
@@ -55,9 +75,14 @@ fun App() {
                     }
                 )
 
-                Tela.CADASTRO -> TelaProvisoria(
-                    titulo = "Registrar manifestação",
+                Tela.CADASTRO -> ManifestacaoScreen(
+                    viewModel = manifestacaoViewModel,
+                    autorId = usuario.id,
                     onVoltar = {
+                        manifestacaoViewModel.limparFormulario()
+                        telaAtual = Tela.INICIAL
+                    },
+                    onCadastroRealizado = {
                         telaAtual = Tela.INICIAL
                     }
                 )
@@ -74,7 +99,7 @@ fun App() {
 }
 
 @Composable
-private fun TelaProvisoria(
+fun TelaProvisoria(
     titulo: String,
     onVoltar: () -> Unit
 ) {
@@ -90,7 +115,7 @@ private fun TelaProvisoria(
             style = MaterialTheme.typography.headlineSmall
         )
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(16.dp))
 
         Text("Tela em desenvolvimento.")
 
