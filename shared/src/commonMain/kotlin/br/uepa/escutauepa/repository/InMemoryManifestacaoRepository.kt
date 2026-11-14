@@ -8,6 +8,14 @@ class InMemoryManifestacaoRepository : ManifestacaoRepository {
     private val manifestacoes =
         mutableListOf<Manifestacao>()
 
+    private var proximoId = 1L
+
+    override fun gerarProximoId(): String {
+        val id = "manifestacao-$proximoId"
+        proximoId++
+        return id
+    }
+
     override fun salvar(manifestacao: Manifestacao) {
 
         require(

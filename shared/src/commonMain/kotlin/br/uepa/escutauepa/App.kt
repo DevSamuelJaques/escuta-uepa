@@ -49,6 +49,10 @@ fun App() {
         ManifestacaoViewModel(manifestacaoService)
     }
 
+    val historicoViewModel = remember {
+        HistoricoViewModel(manifestacaoService)
+    }
+
     var telaAtual by remember {
         mutableStateOf(Tela.INICIAL)
     }
@@ -87,9 +91,10 @@ fun App() {
                     }
                 )
 
-                Tela.HISTORICO -> TelaProvisoria(
-                    titulo = "Meu histórico",
+                Tela.HISTORICO -> HistoricoScreen(
+                    viewModel = historicoViewModel,
                     onVoltar = {
+                        historicoViewModel.fecharDetalhes()
                         telaAtual = Tela.INICIAL
                     }
                 )
