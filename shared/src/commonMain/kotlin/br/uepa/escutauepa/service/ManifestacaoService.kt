@@ -21,7 +21,7 @@ class ManifestacaoService(
             )
     }
 
-    // Valida a manifestação e realiza seu armazenamento
+    // Verifica se a manifestação é do usuário, valida a manifestação e realiza seu armazenamento
     fun cadastrar(manifestacao: Manifestacao) {
         val usuario = obterUsuarioAtual()
 
