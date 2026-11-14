@@ -5,6 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import br.uepa.escutauepa.model.*
 import br.uepa.escutauepa.service.ManifestacaoService
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.format.Padding
+import kotlinx.datetime.format.char
+import kotlinx.datetime.todayIn
+import kotlin.time.Clock
 
 enum class NaturezaManifestacao {
     SUGESTAO,
@@ -69,9 +76,19 @@ class ManifestacaoViewModel(
 
         val id = service.gerarProximoId()
 
-        // Data provisória até implementarmos
-        // a geração automática de datas.
-        val data = "Data não informada"
+        // Sistema para gerar a data automaticamente ao cadastrar uma manifestação
+        val dataHoje: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
+
+        val formatoBrasileiro = LocalDate.Format {
+            this@Format.day(padding = Padding.ZERO)
+            // Garante 2 dígitos (ex: 05, 14)
+            char('/')
+            monthNumber() // Garante 2 dígitos (ex: 01, 11)
+            char('/')
+            year() // Ano com 4 dígitos (ex: 2026)
+        }
+
+        val data = dataHoje.format(formatoBrasileiro)
 
         val manifestacao: Manifestacao = when (natureza) {
             NaturezaManifestacao.SUGESTAO -> Sugestao(

@@ -63,41 +63,46 @@ fun App() {
         if (usuario == null) {
             LoginScreen(loginViewModel)
         } else {
-            when (telaAtual) {
-                Tela.INICIAL -> HomeScreen(
-                    viewModel = homeViewModel,
-                    onCadastrar = {
-                        manifestacaoViewModel.limparFormulario()
-                        telaAtual = Tela.CADASTRO
-                    },
-                    onHistorico = {
-                        telaAtual = Tela.HISTORICO
-                    },
-                    onSair = {
-                        loginViewModel.sair()
-                        telaAtual = Tela.INICIAL
-                    }
-                )
+            Scaffold { paddingValues ->
+                when (telaAtual) {
+                    Tela.INICIAL -> HomeScreen(
+                        viewModel = homeViewModel,
+                        onCadastrar = {
+                            manifestacaoViewModel.limparFormulario()
+                            telaAtual = Tela.CADASTRO
+                        },
+                        onHistorico = {
+                            telaAtual = Tela.HISTORICO
+                        },
+                        onSair = {
+                            loginViewModel.sair()
+                            telaAtual = Tela.INICIAL
+                        },
+                        modifier = Modifier.padding(paddingValues)
+                    )
 
-                Tela.CADASTRO -> ManifestacaoScreen(
-                    viewModel = manifestacaoViewModel,
-                    autorId = usuario.id,
-                    onVoltar = {
-                        manifestacaoViewModel.limparFormulario()
-                        telaAtual = Tela.INICIAL
-                    },
-                    onCadastroRealizado = {
-                        telaAtual = Tela.INICIAL
-                    }
-                )
+                    Tela.CADASTRO -> ManifestacaoScreen(
+                        viewModel = manifestacaoViewModel,
+                        autorId = usuario.id,
+                        onVoltar = {
+                            manifestacaoViewModel.limparFormulario()
+                            telaAtual = Tela.INICIAL
+                        },
+                        onCadastroRealizado = {
+                            telaAtual = Tela.INICIAL
+                        },
+                        modifier = Modifier.padding(paddingValues)
+                    )
 
-                Tela.HISTORICO -> HistoricoScreen(
-                    viewModel = historicoViewModel,
-                    onVoltar = {
-                        historicoViewModel.fecharDetalhes()
-                        telaAtual = Tela.INICIAL
-                    }
-                )
+                    Tela.HISTORICO -> HistoricoScreen(
+                        viewModel = historicoViewModel,
+                        onVoltar = {
+                            historicoViewModel.fecharDetalhes()
+                            telaAtual = Tela.INICIAL
+                        },
+                        modifier = Modifier.padding(paddingValues)
+                    )
+                }
             }
         }
     }
