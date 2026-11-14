@@ -22,7 +22,8 @@ fun ManifestacaoScreen(
     viewModel: ManifestacaoViewModel,
     autorId: String,
     onVoltar: () -> Unit,
-    onCadastroRealizado: () -> Unit
+    onCadastroRealizado: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (viewModel.cadastroRealizado) {
         AlertDialog(
@@ -45,7 +46,7 @@ fun ManifestacaoScreen(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(20.dp),

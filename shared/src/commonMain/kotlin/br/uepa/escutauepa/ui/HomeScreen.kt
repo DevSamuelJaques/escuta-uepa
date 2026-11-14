@@ -23,10 +23,11 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onCadastrar: () -> Unit,
     onHistorico: () -> Unit,
-    onSair: () -> Unit
+    onSair: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(24.dp),

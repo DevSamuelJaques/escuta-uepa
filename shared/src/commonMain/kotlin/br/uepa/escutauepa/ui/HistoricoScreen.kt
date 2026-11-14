@@ -21,7 +21,8 @@ private val VerdeUEPA = Color(0xFF007F77)
 @Composable
 fun HistoricoScreen(
     viewModel: HistoricoViewModel,
-    onVoltar: () -> Unit
+    onVoltar: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(viewModel) {
         viewModel.carregarHistorico()
@@ -35,7 +36,7 @@ fun HistoricoScreen(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
