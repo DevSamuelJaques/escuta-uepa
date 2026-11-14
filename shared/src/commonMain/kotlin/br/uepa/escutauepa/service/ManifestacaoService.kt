@@ -1,6 +1,7 @@
 package br.uepa.escutauepa.service
 
 import br.uepa.escutauepa.model.Manifestacao
+import br.uepa.escutauepa.model.ResumoManifestacao
 import br.uepa.escutauepa.model.Usuario
 import br.uepa.escutauepa.repository.ManifestacaoRepository
 
@@ -52,4 +53,18 @@ class ManifestacaoService(
             it.autorId == usuario.id
         }
     }
+
+    fun listarResumos(): List<ResumoManifestacao> {
+        return listarPorUsuario().map { manifestacao ->
+            ResumoManifestacao(
+                id = manifestacao.id,
+                titulo = manifestacao.conteudo.titulo,
+                natureza = manifestacao.obterNatureza(),
+                destinatario = manifestacao.destinatario,
+                dataCriacao = manifestacao.dataCriacao,
+                status = manifestacao.controleStatus.status
+            )
+        }
+    }
+
 }
