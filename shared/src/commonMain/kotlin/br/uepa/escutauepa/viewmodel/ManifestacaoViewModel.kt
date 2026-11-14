@@ -67,7 +67,7 @@ class ManifestacaoViewModel(
             descricao = descricao.trim()
         )
 
-        val id = "manifestacao-${proximoId}"
+        val id = service.gerarProximoId()
 
         // Data provisória até implementarmos
         // a geração automática de datas.

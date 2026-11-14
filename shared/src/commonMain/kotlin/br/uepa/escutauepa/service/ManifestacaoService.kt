@@ -14,6 +14,10 @@ class ManifestacaoService(
     private val repository: ManifestacaoRepository,
     private val autenticacaoService: AutenticacaoService
 ) {
+    fun gerarProximoId(): String {
+        obterUsuarioAtual()
+        return repository.gerarProximoId()
+    }
 
     private fun obterUsuarioAtual(): Usuario {
         return autenticacaoService.usuarioAtual
