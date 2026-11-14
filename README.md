@@ -1,39 +1,69 @@
-This is a Kotlin Multiplatform project targeting Android, Web.
+# EscutaUEPA
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-    - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-    - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-      For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-      the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-      Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-      folder is the appropriate location.
+O **EscutaUEPA** é um aplicativo acadêmico desenvolvido em **Kotlin e Compose Multiplatform** para a disciplina de **Programação Orientada a Objetos (POO)**. A proposta é permitir que membros da comunidade acadêmica da UEPA registrem e consultem manifestações.
 
-### Running the apps
+> **Projeto demonstrativo:** o login é fictício e os dados são guardados apenas em memória.
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and
-options:
+## Links importantes
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- Web app:
-    - Wasm target (faster, modern browsers): `./gradlew :webApp:wasmJsBrowserDevelopmentRun`
-    - JS target (slower, supports older browsers): `./gradlew :webApp:jsBrowserDevelopmentRun`
+- [EscutaUEPA (Acesse aqui)](https://fantastic-frangipane-dcab45.netlify.app/)
+- [Pasta principal do projeto](https://github.com/DevSamuelJaques/escuta-uepa/tree/main/shared/src/commonMain/kotlin/br/uepa/escutauepa)
 
-### Running tests
+## Funcionalidades
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+- **Login:** acesso demonstrativo por e-mail e senha.
+- **Tela inicial:** acesso às principais funções.
+- **Nova manifestação:** registro de **sugestão, reclamação ou denúncia**, direcionada a **aluno, professor ou campus**, com título e descrição.
+- **Histórico:** consulta das manifestações cadastradas e de seus status.
 
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- Web tests:
-    - Wasm target: `./gradlew :shared:wasmJsTest`
-    - JS target: `./gradlew :shared:jsTest`
+## Estrutura de pacotes
 
----
+Os arquivos principais ficam em `shared/src/commonMain/kotlin/br/uepa/escutauepa`:
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://kotlinlang.org/compose-multiplatform/),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+```text
+br/uepa/escutauepa/
+├── App.kt                       # Organiza as telas do aplicativo
+├── model/                       # Classes que representam os dados
+│   ├── Usuario.kt
+│   ├── Manifestacao.kt
+│   ├── Sugestao.kt
+│   ├── Reclamacao.kt
+│   ├── Denuncia.kt
+│   ├── ConteudoManifestacao.kt
+│   ├── ControleStatus.kt
+│   ├── Destinatario.kt
+│   ├── StatusManifestacao.kt
+│   └── ResumoManifestacao.kt
+├── repository/                  # Armazena e consulta manifestações
+│   ├── ManifestacaoRepository.kt
+│   └── InMemoryManifestacaoRepository.kt
+├── service/                     # Regras de cadastro e login
+│   ├── ManifestacaoService.kt
+│   └── AutenticacaoService.kt
+├── viewmodel/                   # Liga as telas à lógica do aplicativo
+│   ├── LoginViewModel.kt
+│   ├── HomeViewModel.kt
+│   ├── ManifestacaoViewModel.kt
+│   └── HistoricoViewModel.kt
+└── ui/                  # Telas feitas com Compose
+    ├── LoginScreen.kt
+    ├── HomeScreen.kt
+    ├── ManifestacaoScreen.kt
+    └── HistoricoScreen.kt
+```
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack
-channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+## Onde usamos POO?
+
+| Conceito | Aplicação no EscutaUEPA |
+|---|---|
+| **Classes** | `Usuario`, `Manifestacao` e outras classes definem dados e comportamentos. |
+| **Objetos** | Cada sugestão, reclamação ou denúncia cadastrada é um objeto. |
+| **Encapsulamento** | Atributos privados e métodos controlam o acesso aos dados, como em `AutenticacaoService`. |
+| **Herança** | `Sugestao`, `Reclamacao` e `Denuncia` herdam de `Manifestacao`. |
+| **Polimorfismo** | Cada tipo de manifestação pode executar sua própria versão de `validar()`. |
+| **Composição** | `Manifestacao` contém objetos como `ConteudoManifestacao` e `ControleStatus`. |
+| **Organização em pacotes** | Os arquivos são separados em `model`, `repository`, `service`, `viewmodel` e `ui`. |
+
+## Organização do projeto
+
+As atividades são acompanhadas no **Taiga**, e o código é versionado com **Git e GitHub**, seguindo a política de commits da disciplina.
